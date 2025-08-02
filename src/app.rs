@@ -1,8 +1,7 @@
 use crate::behavior::AppBehavior;
 use crate::error::{OxideError, OxideResult};
 use crate::log;
-use crate::logger::init_logger;
-use sdl2::{event::Event, keyboard::Keycode, render::Canvas, video::Window};
+use sdl2::{event::Event, render::Canvas, video::Window};
 use std::path::PathBuf;
 use std::time::Instant;
 
@@ -40,8 +39,6 @@ impl<B: AppBehavior> Application<B> {
     /// # Errors
     /// Returns an error if SDL2, the logger or the window/canvas cannot be initialized.
     pub fn new(config: AppConfig, behavior: B) -> OxideResult<Self> {
-        init_logger(config.log_directory.as_deref())?;
-
         let sdl_context = sdl2::init().map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
         let video_subsystem = sdl_context
             .video()
@@ -135,13 +132,6 @@ impl<B: AppBehavior> Application<B> {
 
     /// Helper to check if an event should quit the app.
     fn should_quit(event: &Event) -> bool {
-        matches!(
-            event,
-            Event::Quit { .. }
-                | Event::KeyDown {
-                    keycode: Some(Keycode::Escape),
-                    ..
-                }
-        )
+        matches!(event, Event::Quit { .. })
     }
 }

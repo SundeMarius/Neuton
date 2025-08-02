@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use oxide::{AppBehavior, AppConfig, Application, OxideResult, log};
+use oxide::{AppBehavior, AppConfig, Application, OxideResult, init_logger, log};
 use sdl2::{event::Event, pixels::Color, render::Canvas, video::Window};
 
 struct MyApp {
@@ -37,13 +37,15 @@ impl AppBehavior for MyApp {
 
 fn main() -> OxideResult<()> {
     let config = AppConfig {
-        app_name: "Sundaria".to_string(),
+        app_name: "Example App".to_string(),
         window_width: 3560,
         window_height: 1440,
         fullscreen: false,
         vsync: true,
         log_directory: Some(PathBuf::from("/tmp")),
     };
+
+    init_logger(config.log_directory.as_deref())?;
 
     Application::new(config, MyApp::new())?.run()
 }
