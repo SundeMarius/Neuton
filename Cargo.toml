@@ -1,0 +1,10 @@
+[package]
+name = "oxide"
+authors = ["Marius Sunde <marius.sunde@pm.me>"]
+version = "0.1.0"
+edition = "2024"
+license-file = "LICENSE"
+description = "A convenient Game Engine for Rust on top of SDL2"
+repository = "https://github.com/SundeMarius/oxide"
+
+[dependencies]
