@@ -8,3 +8,6 @@ description = "A convenient Game Engine for Rust on top of SDL2"
 repository = "https://github.com/SundeMarius/oxide"
 
 [dependencies]
+log = "0.4.27"
+pretty_env_logger = "0.5.0"
+sdl2 = { version = "0.38.0", features = ["image", "ttf"] }
