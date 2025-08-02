@@ -1,8 +1,9 @@
 use crate::behavior::AppBehavior;
 use crate::error::{OxideError, OxideResult};
+use crate::log;
 use crate::logger::init_logger;
-use crate::oxide_log;
 use sdl2::{event::Event, keyboard::Keycode, render::Canvas, video::Window};
+use std::path::PathBuf;
 use std::time::Instant;
 
 /// Configuration for the application window and rendering.
@@ -18,6 +19,8 @@ pub struct AppConfig {
     pub fullscreen: bool,
     /// Whether to enable vsync for the renderer.
     pub vsync: bool,
+    /// Optional directory for log files. If None, uses the home directory as default.
+    pub log_directory: Option<PathBuf>,
 }
 
 /// Main application struct. Owns the SDL context, window, and user logic.
@@ -37,7 +40,7 @@ impl<B: AppBehavior> Application<B> {
     /// # Errors
     /// Returns an error if SDL2, the logger or the window/canvas cannot be initialized.
     pub fn new(config: AppConfig, behavior: B) -> OxideResult<Self> {
-        init_logger()?;
+        init_logger(config.log_directory.as_deref())?;
 
         let sdl_context = sdl2::init().map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
         let video_subsystem = sdl_context
@@ -67,7 +70,7 @@ impl<B: AppBehavior> Application<B> {
             .build()
             .map_err(|e| OxideError::CanvasError(e.to_string()))?;
 
-        oxide_log!(info, "'{}' initialized!", config.app_name);
+        log!(info, "'{}' initialized!", config.app_name);
 
         Ok(Self {
             config,
@@ -88,7 +91,7 @@ impl<B: AppBehavior> Application<B> {
             .event_pump()
             .map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
 
-        oxide_log!(info, "Running '{}'", self.config.app_name);
+        log!(info, "Running '{}'", self.config.app_name);
 
         let mut dt = 0.0;
         'running: loop {
@@ -110,9 +113,24 @@ impl<B: AppBehavior> Application<B> {
             self.frame_rate = if dt > 0.0 { 1.0 / dt } else { 0.0 };
         }
 
-        oxide_log!(info, "'{}' has exited.", self.config.app_name);
+        log!(info, "'{}' has exited.", self.config.app_name);
 
         Ok(())
+    }
+
+    /// Get a reference to the window.
+    pub fn window(&self) -> &Window {
+        self.canvas.window()
+    }
+
+    /// Get a mutable reference to the canvas.
+    pub fn canvas(&mut self) -> &mut Canvas<Window> {
+        &mut self.canvas
+    }
+
+    /// Get the most recent frame rate (frames per second).
+    pub fn frame_rate(&self) -> f64 {
+        self.frame_rate
     }
 
     /// Helper to check if an event should quit the app.
@@ -125,20 +143,5 @@ impl<B: AppBehavior> Application<B> {
                     ..
                 }
         )
-    }
-
-    /// Get the most recent frame rate (frames per second).
-    pub fn frame_rate(&self) -> f64 {
-        self.frame_rate
-    }
-
-    /// Get a reference to the window.
-    pub fn window(&self) -> &Window {
-        self.canvas.window()
-    }
-
-    /// Get a mutable reference to the canvas.
-    pub fn canvas(&mut self) -> &mut Canvas<Window> {
-        &mut self.canvas
     }
 }
