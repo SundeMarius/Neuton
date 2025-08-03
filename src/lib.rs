@@ -11,5 +11,6 @@ pub use behavior::AppBehavior;
 pub use error::{OxideError, OxideResult};
 pub use logger::init_logger;
 pub use scene::{Scene, SceneStack};
-pub use sdl2::{event::Event, render::Canvas, video::Window};
+pub use sdl2;
+pub use sdl2::*;
 pub use utils::*;
