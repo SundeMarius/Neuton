@@ -1,6 +1,6 @@
 use std::{any::Any, path::Path, sync::Arc};
 
-use crate::OxideResult;
+use crate::NeutonResult;
 
 /// Trait for all assets in the engine.
 /// This trait provides methods to access the asset's path and to downcast it to its concrete type.
@@ -14,7 +14,7 @@ pub trait Asset: Any + Send + Sync {
 #[allow(dead_code)]
 pub trait LoadableAsset: Asset + Sized {
     /// Load the asset from the specified path.
-    fn load<P: AsRef<Path>>(path: P) -> OxideResult<Self>;
+    fn load<P: AsRef<Path>>(path: P) -> NeutonResult<Self>;
 
     /// Returns the path of the asset.
     fn path(&self) -> &Path;
@@ -36,7 +36,7 @@ impl AssetManager {
         Self { assets: Vec::new() }
     }
 
-    pub fn load_asset<T>(&mut self, path: impl AsRef<Path>) -> OxideResult<Arc<T>>
+    pub fn load_asset<T>(&mut self, path: impl AsRef<Path>) -> NeutonResult<Arc<T>>
     where
         T: LoadableAsset + 'static,
     {

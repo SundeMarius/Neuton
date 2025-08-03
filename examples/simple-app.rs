@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use oxide::{AppBehavior, AppConfig, Application, OxideResult, init_logger, log};
+use neuton::*;
 use sdl2::{event::Event, pixels::Color, render::Canvas, video::Window};
 
 struct MyApp {
@@ -35,7 +35,7 @@ impl AppBehavior for MyApp {
     }
 }
 
-fn main() -> OxideResult<()> {
+fn main() -> NeutonResult<()> {
     let config = AppConfig {
         app_name: "Example App".to_string(),
         window_width: 3560,

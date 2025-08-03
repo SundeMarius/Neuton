@@ -2,7 +2,7 @@ use thiserror::Error;
 
 /// All errors that can occur in the engine.
 #[derive(Debug, Error)]
-pub enum OxideError {
+pub enum NeutonError {
     #[error("SDL2 error: {0}")]
     Sdl2Error(String),
 
@@ -19,17 +19,17 @@ pub enum OxideError {
     Other(String),
 }
 
-impl From<std::io::Error> for OxideError {
+impl From<std::io::Error> for NeutonError {
     fn from(err: std::io::Error) -> Self {
-        OxideError::Other(err.to_string())
+        NeutonError::Other(err.to_string())
     }
 }
 
-impl From<String> for OxideError {
+impl From<String> for NeutonError {
     fn from(err: String) -> Self {
-        OxideError::Other(err)
+        NeutonError::Other(err)
     }
 }
 
 /// Convenient result type for the engine.
-pub type OxideResult<T> = std::result::Result<T, OxideError>;
+pub type NeutonResult<T> = std::result::Result<T, NeutonError>;

@@ -2,12 +2,12 @@ use std::path::Path;
 
 use tracing_subscriber::{EnvFilter, layer::SubscriberExt, util::SubscriberInitExt};
 
-use crate::{OxideResult, error::OxideError};
+use crate::{NeutonResult, error::NeutonError};
 
 /// Initializes the global logger for the engine.
 ///
 /// Should be called once at the start of your application.
-pub fn init_logger(log_directory: Option<&Path>) -> OxideResult<()> {
+pub fn init_logger(log_directory: Option<&Path>) -> NeutonResult<()> {
     // Default level: "debug" in debug mode, "info" in release mode
     let default_level = if cfg!(debug_assertions) {
         "debug"
@@ -26,8 +26,8 @@ pub fn init_logger(log_directory: Option<&Path>) -> OxideResult<()> {
 
     let file_appender = tracing_appender::rolling::daily(
         log_directory
-            .or(dirs::home_dir().map(|f| f.join(".oxide/logs")).as_deref())
-            .ok_or_else(|| OxideError::LoggerError("No available log directory".to_string()))?,
+            .or(dirs::home_dir().map(|f| f.join(".neuton/logs")).as_deref())
+            .ok_or_else(|| NeutonError::LoggerError("No available log directory".to_string()))?,
         "log",
     );
 

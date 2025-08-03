@@ -1,5 +1,5 @@
 use crate::behavior::AppBehavior;
-use crate::error::{OxideError, OxideResult};
+use crate::error::{NeutonError, NeutonResult};
 use crate::log;
 use sdl2::{event::Event, render::Canvas, video::Window};
 use serde::{Deserialize, Serialize};
@@ -43,11 +43,11 @@ impl<B: AppBehavior> Application<B> {
     ///
     /// # Errors
     /// Returns an error if SDL2, the logger or the window/canvas cannot be initialized.
-    pub fn new(config: AppConfig, behavior: B) -> OxideResult<Self> {
-        let sdl_context = sdl2::init().map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
+    pub fn new(config: AppConfig, behavior: B) -> NeutonResult<Self> {
+        let sdl_context = sdl2::init().map_err(|e| NeutonError::Sdl2Error(e.to_string()))?;
         let video_subsystem = sdl_context
             .video()
-            .map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
+            .map_err(|e| NeutonError::Sdl2Error(e.to_string()))?;
         let mut window_builder =
             video_subsystem.window(&config.app_name, config.window_width, config.window_height);
 
@@ -62,7 +62,7 @@ impl<B: AppBehavior> Application<B> {
 
         let window = window_builder
             .build()
-            .map_err(|e| OxideError::WindowError(e.to_string()))?;
+            .map_err(|e| NeutonError::WindowError(e.to_string()))?;
 
         let mut canvas_builder = window.into_canvas();
         if config.vsync {
@@ -70,7 +70,7 @@ impl<B: AppBehavior> Application<B> {
         }
         let canvas = canvas_builder
             .build()
-            .map_err(|e| OxideError::CanvasError(e.to_string()))?;
+            .map_err(|e| NeutonError::CanvasError(e.to_string()))?;
 
         log!(info, "'{}' initialized!", config.app_name);
 
@@ -87,11 +87,11 @@ impl<B: AppBehavior> Application<B> {
     ///
     /// Handles events, updates, and rendering. Calls user hooks each frame.
     /// Returns when the window is closed or Escape is pressed.
-    pub fn run(mut self) -> OxideResult<()> {
+    pub fn run(mut self) -> NeutonResult<()> {
         let mut event_pump = self
             .sdl_context
             .event_pump()
-            .map_err(|e| OxideError::Sdl2Error(e.to_string()))?;
+            .map_err(|e| NeutonError::Sdl2Error(e.to_string()))?;
 
         log!(info, "Running '{}'", self.config.app_name);
 

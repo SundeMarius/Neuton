@@ -8,7 +8,7 @@ mod utils;
 
 pub use app::{AppConfig, Application};
 pub use behavior::AppBehavior;
-pub use error::{OxideError, OxideResult};
+pub use error::{NeutonError, NeutonResult};
 pub use logger::init_logger;
 pub use scene::{Scene, SceneStack};
 pub use sdl2;

@@ -1,4 +1,4 @@
-# Oxide
+# Neuton
 
 A convenient Game Engine for Rust on top of SDL2.
 
@@ -9,10 +9,10 @@ A convenient Game Engine for Rust on top of SDL2.
 
 ## Getting Started
 
-Add `oxide` as a dependency in your `Cargo.toml`:
+Add `neuton` as a dependency in your `Cargo.toml`:
 
 ```toml
-oxide = "0.1.0"
+neuton = "1.0.0"
 ```
 
 ## License

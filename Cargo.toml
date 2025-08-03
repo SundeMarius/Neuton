@@ -1,11 +1,13 @@
 [package]
-name = "oxide"
+name = "neuton"
 authors = ["Marius Sunde <marius.sunde@pm.me>"]
 version = "0.1.0"
 edition = "2024"
 license-file = "LICENSE"
 description = "A convenient Game Engine for Rust on top of SDL2"
-repository = "https://github.com/SundeMarius/oxide"
+repository = "https://github.com/SundeMarius/Neuton"
+readme = "README.md"
+keywords = ["game engine", "sdl2", "game development"]
 
 [dependencies]
 dirs = "6.0.0"
