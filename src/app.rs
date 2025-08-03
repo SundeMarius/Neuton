@@ -2,11 +2,13 @@ use crate::behavior::AppBehavior;
 use crate::error::{OxideError, OxideResult};
 use crate::log;
 use sdl2::{event::Event, render::Canvas, video::Window};
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use std::time::Instant;
+use std::thread;
+use std::time::{Duration, Instant};
 
 /// Configuration for the application window and rendering.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppConfig {
     /// The window title.
     pub app_name: String,
@@ -15,9 +17,12 @@ pub struct AppConfig {
     /// The window height in pixels.
     pub window_height: u32,
     /// Whether to start in fullscreen mode.
+    #[serde(skip_deserializing)]
     pub fullscreen: bool,
     /// Whether to enable vsync for the renderer.
     pub vsync: bool,
+    /// Optional maximum frames per second. If None, defaults to 300 Hz.
+    pub max_fps: Option<u32>,
     /// Optional directory for log files. If None, uses the home directory as default.
     pub log_directory: Option<PathBuf>,
 }
@@ -90,10 +95,17 @@ impl<B: AppBehavior> Application<B> {
 
         log!(info, "Running '{}'", self.config.app_name);
 
-        let mut dt = 0.0;
-        'running: loop {
-            let current_frame = Instant::now();
+        let mut last_frame = Instant::now();
 
+        'running: loop {
+            let frame_start = Instant::now();
+
+            // Compute delta time (clamped)
+            let dt = last_frame.elapsed().as_secs_f64().min(0.1);
+            self.frame_rate = 1.0 / (dt + f64::EPSILON);
+            last_frame = frame_start;
+
+            // Input
             for event in event_pump.poll_iter() {
                 if Self::should_quit(&event) {
                     break 'running;
@@ -101,17 +113,25 @@ impl<B: AppBehavior> Application<B> {
                 self.behavior.on_event(&event);
             }
 
+            // Update & Render
             self.behavior.on_update(dt);
             self.canvas.clear();
             self.behavior.on_render(&mut self.canvas);
             self.canvas.present();
 
-            dt = current_frame.elapsed().as_secs_f64();
-            self.frame_rate = if dt > 0.0 { 1.0 / dt } else { 0.0 };
+            // Framerate limiting
+            if !self.config.vsync {
+                if let Some(max_fps) = self.config.max_fps {
+                    let target_frame_time = Duration::from_secs_f64(1.0 / max_fps.max(1) as f64);
+                    let elapsed = frame_start.elapsed();
+                    if elapsed < target_frame_time {
+                        thread::sleep(target_frame_time - elapsed);
+                    }
+                }
+            }
         }
 
         log!(info, "'{}' has exited.", self.config.app_name);
-
         Ok(())
     }
 

@@ -42,6 +42,7 @@ fn main() -> OxideResult<()> {
         window_height: 1440,
         fullscreen: false,
         vsync: true,
+        max_fps: Some(60),
         log_directory: Some(PathBuf::from("/tmp")),
     };
 
