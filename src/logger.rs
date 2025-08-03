@@ -8,8 +8,16 @@ use crate::{OxideResult, error::OxideError};
 ///
 /// Should be called once at the start of your application.
 pub fn init_logger(log_directory: Option<&Path>) -> OxideResult<()> {
-    // Read filter from RUST_LOG environment variable or default to "info"
-    let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    // Default level: "debug" in debug mode, "info" in release mode
+    let default_level = if cfg!(debug_assertions) {
+        "debug"
+    } else {
+        "info"
+    };
+
+    // Use RUST_LOG if set, otherwise fallback to the default
+    let filter =
+        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(default_level));
 
     let fmt_layer = tracing_subscriber::fmt::layer()
         .pretty()
@@ -19,11 +27,10 @@ pub fn init_logger(log_directory: Option<&Path>) -> OxideResult<()> {
     let file_appender = tracing_appender::rolling::daily(
         log_directory
             .or(dirs::home_dir().map(|f| f.join(".oxide/logs")).as_deref())
-            .ok_or(OxideError::LoggerError(
-                "No available log directory".to_string(),
-            ))?,
+            .ok_or_else(|| OxideError::LoggerError("No available log directory".to_string()))?,
         "log",
     );
+
     let file_layer = tracing_subscriber::fmt::layer()
         .with_writer(file_appender)
         .with_target(false);
