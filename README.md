@@ -1,6 +1,6 @@
 # Neuton
 
-A convenient Game Engine for Rust on top of SDL2.
+A Game Engine for Rust on top of SDL2.
 
 ## Features
 
