@@ -1,7 +1,5 @@
-use std::path::PathBuf;
-
 use neuton::*;
-use sdl2::{event::Event, pixels::Color, render::Canvas, video::Window};
+use std::path::PathBuf;
 
 struct MyApp {
     color: u8,

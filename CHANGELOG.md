@@ -31,6 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generic and memory efficient Asset manager.
 - Example for basic usage of the API.
 
-[unreleased]: https://github.com/SundeMarius/Neuton/releases/tag/v0.2.0...HEAD
-[0.2.0]: https://github.com/SundeMarius/Neuton/releases/compare/v0.1.0...v0.2.0
+[unreleased]: https://github.com/SundeMarius/Neuton/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/SundeMarius/Neuton/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/SundeMarius/Neuton/releases/tag/v0.1.0
