@@ -12,7 +12,7 @@ A Game Engine for Rust on top of SDL2.
 Add `neuton` as a dependency in your `Cargo.toml`:
 
 ```toml
-neuton = "1.0.0"
+neuton = "0.1.0"
 ```
 
 ## License
