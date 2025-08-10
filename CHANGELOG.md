@@ -10,6 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better window abstraction to easily write text.
 - Debug functionality for applications.
 
+## [0.3.0] - 2025-08-10
+
+### Added
+
+- Add new example using scenes.
+
+### Changed
+
+- BREAKING remove unnecessary as_any method for Asset.
+- Simplified the README for now.
+
 ## [0.2.0] - 2025-08-04
 
 ### Added
@@ -32,5 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example for basic usage of the API.
 
 [unreleased]: https://github.com/SundeMarius/Neuton/compare/v0.2.0...HEAD
+[0.3.0]: https://github.com/SundeMarius/Neuton/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/SundeMarius/Neuton/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/SundeMarius/Neuton/releases/tag/v0.1.0
