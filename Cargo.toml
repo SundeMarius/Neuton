@@ -1,7 +1,7 @@
 [package]
 name = "neuton"
 authors = ["Marius Sunde <marius.sunde@pm.me>"]
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 license-file = "LICENSE"
 description = "A Game Engine for Rust on top of SDL2"

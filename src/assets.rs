@@ -3,10 +3,7 @@ use std::{any::Any, path::Path, sync::Arc};
 use crate::NeutonResult;
 
 /// Trait for all assets in the engine.
-/// This trait provides methods to access the asset's path and to downcast it to its concrete type.
-pub trait Asset: Any + Send + Sync {
-    fn as_any(&self) -> &dyn Any;
-}
+pub trait Asset: Any + Send + Sync {}
 
 /// Trait for assets that can be loaded from a file.
 /// This trait extends the `Asset` trait and provides a method to load the asset from a file path.
@@ -15,15 +12,6 @@ pub trait Asset: Any + Send + Sync {
 pub trait LoadableAsset: Asset + Sized {
     /// Load the asset from the specified path.
     fn load<P: AsRef<Path>>(path: P) -> NeutonResult<Self>;
-
-    /// Returns the path of the asset.
-    fn path(&self) -> &Path;
-}
-
-impl<T: Asset> Asset for Box<T> {
-    fn as_any(&self) -> &dyn Any {
-        self.as_ref().as_any()
-    }
 }
 
 pub struct AssetManager {

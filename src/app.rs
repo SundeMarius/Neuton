@@ -120,13 +120,11 @@ impl<B: AppBehavior> Application<B> {
             self.canvas.present();
 
             // Framerate limiting
-            if !self.config.vsync {
-                if let Some(max_fps) = self.config.max_fps {
-                    let target_frame_time = Duration::from_secs_f64(1.0 / max_fps.max(1) as f64);
-                    let elapsed = frame_start.elapsed();
-                    if elapsed < target_frame_time {
-                        thread::sleep(target_frame_time - elapsed);
-                    }
+            if !self.config.vsync && let Some(max_fps) = self.config.max_fps {
+                let target_frame_time = Duration::from_secs_f64(1.0 / max_fps.max(1) as f64);
+                let elapsed = frame_start.elapsed();
+                if elapsed < target_frame_time {
+                    thread::sleep(target_frame_time - elapsed);
                 }
             }
         }

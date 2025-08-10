@@ -7,14 +7,6 @@ A Game Engine for Rust on top of SDL2.
 - Simple API for game development in Rust
 - Built on top of SDL2
 
-## Getting Started
-
-Add `neuton` as a dependency in your `Cargo.toml`:
-
-```toml
-neuton = "0.1.0"
-```
-
 ## License
 
 See [LICENSE](LICENSE).
